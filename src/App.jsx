@@ -1,3 +1,5 @@
+import { useState } from "react";
+
 /* eslint-disable react/prop-types */
 const initialFriends = [
   {
@@ -20,13 +22,28 @@ const initialFriends = [
   },
 ];
 
+function Button({ children, onClick }) {
+  return (
+    <button className="button" onClick={onClick}>
+      {children}
+    </button>
+  );
+}
+
 export default function App() {
+  const [showFormAddFriend, setShowFormAddFriend] = useState(false);
+
+  function handlerShowFormAddFriend() {
+    setShowFormAddFriend((show) => !show);
+  }
   return (
     <div className="app">
       <div className="sidebar">
         <FriendList />
-        <FormAddFriend />
-        <Button>Add Friend</Button>
+        {showFormAddFriend && <FormAddFriend />}
+        <Button onClick={handlerShowFormAddFriend}>
+          {showFormAddFriend ? "Close" : "Add Friend"}
+        </Button>
       </div>
       <FormSplitBill />
     </div>
@@ -64,10 +81,6 @@ function Friend({ friend }) {
       <Button>Select</Button>
     </li>
   );
-}
-
-function Button({ children }) {
-  return <button className="button">{children}</button>;
 }
 
 function FormAddFriend() {
